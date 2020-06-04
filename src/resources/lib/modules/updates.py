@@ -452,7 +452,7 @@ class updates:
                     version = self.oe.VERSION
                 if self.struct['update']['settings']['Build']['value'] != '':
                     self.update_file = self.update_json[self.struct['update']['settings']['Channel']['value']]['url'] + self.get_available_builds(self.struct['update']['settings']['Build']['value'])
-                    answer = xbmcDialog.yesno('LibreELEC Update', self.oe._(32188).encode('utf-8') + ':  ' + version.encode('utf-8'),
+                    answer = xbmcDialog.yesno('LiserTV Update', self.oe._(32188).encode('utf-8') + ':  ' + version.encode('utf-8'),
                                           self.oe._(32187).encode('utf-8') + ':  ' + self.struct['update']['settings']['Build']['value'].encode('utf-8'),
                                           self.oe._(32180).encode('utf-8'))
                     xbmcDialog = None
@@ -469,9 +469,7 @@ class updates:
         try:
             self.oe.dbg_log('updates::get_json', 'enter_function', 0)
             if url is None:
-                url = self.UPDATE_DOWNLOAD_URL % ('releases', 'releases.json')
-            if url.split('/')[-1] != 'releases.json':
-                url = url + '/releases.json'
+                url = self.UPDATE_DOWNLOAD_URL % ('raw.githubusercontent.com', 'Leverex/lisertv.update/master', 'releases.json')
             data = self.oe.load_url(url)
             if not data is None:
                 update_json = json.loads(data)
@@ -546,16 +544,11 @@ class updates:
                 version = self.oe.BUILDER_VERSION
             else:
                 version = self.oe.VERSION
-            url = '%s?i=%s&d=%s&pa=%s&v=%s&f=%s' % (
+            url = '%s/%s/%s/release.json' % (
                 self.UPDATE_REQUEST_URL,
-                self.oe.url_quote(systemid),
-                self.oe.url_quote(self.oe.DISTRIBUTION),
-                self.oe.url_quote(self.oe.ARCHITECTURE),
                 self.oe.url_quote(version),
-                self.oe.url_quote(self.hardware_flags),
+                self.oe.url_quote(self.oe.ARCHITECTURE)
                 )
-            if self.oe.BUILDER_NAME:
-               url += '&b=%s' % self.oe.url_quote(self.oe.BUILDER_NAME)
 
             self.oe.dbg_log('updates::check_updates_v2', 'URL: %s' % url, 0)
             update_json = self.oe.load_url(url)
@@ -563,8 +556,8 @@ class updates:
             if update_json != '':
                 update_json = json.loads(update_json)
                 self.last_update_check = time.time()
-                if 'update' in update_json['data'] and 'folder' in update_json['data']:
-                    self.update_file = self.UPDATE_DOWNLOAD_URL % (update_json['data']['folder'], update_json['data']['update'])
+                if 'host' in update_json['data'] and 'update' in update_json['data'] and 'folder' in update_json['data']:
+                    self.update_file = self.UPDATE_DOWNLOAD_URL % (update_json['data']['host'], update_json['data']['folder'], update_json['data']['update'])
                     if self.struct['update']['settings']['UpdateNotify']['value'] == '1':
                         self.oe.notify(self.oe._(32363).encode('utf-8'), self.oe._(32364).encode('utf-8'))
                     if self.struct['update']['settings']['AutoUpdate']['value'] == 'auto' and force == False:

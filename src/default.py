@@ -6,7 +6,7 @@ import xbmc
 import socket
 import xbmcaddon
 
-__scriptid__ = 'service.libreelec.settings'
+__scriptid__ = 'service.lisertv.settings'
 __addon__ = xbmcaddon.Addon(id=__scriptid__)
 __cwd__ = __addon__.getAddonInfo('path')
 __media__ = '%s/resources/skins/Default/media' % __cwd__
@@ -14,8 +14,8 @@ _ = __addon__.getLocalizedString
 
 try:
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    sock.connect('/var/run/service.libreelec.settings.sock')
+    sock.connect('/var/run/service.lisertv.settings.sock')
     sock.send('openConfigurationWindow')
     sock.close()
 except Exception, e:
-    xbmc.executebuiltin('Notification("LibreELEC", "%s", 5000, "%s/icon.png")' % (_(32390).encode('utf-8'), __media__))
+    xbmc.executebuiltin('Notification("LiserTV", "%s", 5000, "%s/icon.png")' % (_(32390).encode('utf-8'), __media__))

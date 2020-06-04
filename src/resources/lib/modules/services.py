@@ -9,7 +9,7 @@ import xbmc
 import xbmcgui
 import xbmcaddon
 
-__scriptid__ = 'service.libreelec.settings'
+__scriptid__ = 'service.lisertv.settings'
 __addon__ = xbmcaddon.Addon(id=__scriptid__)
 xbmcDialog = xbmcgui.Dialog()
 
@@ -621,7 +621,7 @@ class services:
             SSHchange = False
             newpwd = xbmcDialog.input(self.oe._(746))
             if newpwd:
-                if newpwd == "libreelec":
+                if newpwd == "lisertv":
                     self.oe.execute('cp -fp /usr/cache/shadow /storage/.cache/shadow')
                     readout3 = "Retype password"
                 else:
