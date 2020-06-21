@@ -195,7 +195,7 @@ def _(code):
     return codeNew
 
 
-def dbg_log(source, text, level=4):
+def dbg_log(source, text, level=3):
     if level == 0 and os.environ.get('DEBUG', 'no') == 'no':
         return
     xbmc.log('## LiserTV Addon ## ' + source + ' ## ' + text, level)
